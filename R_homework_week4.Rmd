@@ -1,0 +1,39 @@
+---
+title: "R_homework_week4"
+output: html_document
+date: "2023-10-27"
+---
+```{r}
+library(here)
+WM <- st_read(here("source/World_Countries_Generalized", "World_Countries_Generalized.shp"))
+
+library(dplyr)
+gii <- read.csv(here("source", "HDR21-22_Composite_indices_complete_time_series.csv"), na.strings=c(""))%>%
+  dplyr::select(2,starts_with("gii"))
+
+diff_gii <- gii%>%
+  dplyr::select(1,"gii_2010", "gii_2019")%>%
+  mutate(diff_2019_2010= gii_2019 - gii_2010)
+
+library(janitor)
+GiiDiffDataMap <- WM %>% 
+  clean_names() %>%
+  left_join(., 
+            diff_gii,
+            by = c("country" = "country"))
+
+#tmap_mode("plot")
+#qtm(GiiDiffDataMap, 
+    #fill = "diff_2019_2010")
+
+tmap_mode("plot")
+tm_shape(GiiDiffDataMap) + 
+tm_polygons("diff_2019_2010", 
+        style="jenks",
+        palette="YlOrBr",
+        midpoint=NA,
+        title="Differences",
+        alpha = 0.5) + 
+   tm_layout(title = "Differences in global gender inqeuality between 2010 and 2019", legend.position = c("left", "bottom"))
+```
+
