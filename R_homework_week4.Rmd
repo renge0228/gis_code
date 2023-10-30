@@ -30,10 +30,10 @@ tmap_mode("plot")
 tm_shape(GiiDiffDataMap) + 
 tm_polygons("diff_2019_2010", 
         style="jenks",
-        palette="YlOrBr",
+        palette="YlOrRd",
         midpoint=NA,
-        title="Differences",
-        alpha = 0.5) + 
-   tm_layout(title = "Differences in global gender inqeuality between 2010 and 2019", legend.position = c("left", "bottom"))
+        title="Differences  
+between 2010 and 2019",
+        alpha = 0.5)
 ```
 
